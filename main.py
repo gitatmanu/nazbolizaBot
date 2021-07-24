@@ -1,4 +1,4 @@
-import tweepy, os
+import tweepy, os, emoji
 
 from selenium import webdriver
 from selenium.webdriver.chrome.webdriver import WebDriver
@@ -55,7 +55,7 @@ def generate_image(tweet_url, name, driver):
 
     try:
         element = driver.find_element_by_xpath("//span[contains(text(), '"+ name +"')]")
-        driver.execute_script("arguments[0].innerText='"+ "&#127462;&#127485;" +"'", element)
+        driver.execute_script("arguments[0].innerText='"+ emoji.emojize(generate_nazbol_name()) +"'", element)
     except NoSuchElementException:
         pass
 
