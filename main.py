@@ -50,14 +50,12 @@ def document_initialised(driver):
 
 def generate_image(tweet_url, name, driver):
     # Scrap web and modify HTML
-    driver = webdriver.Chrome('C:/Users/manum/Desktop/nazbolizaBot/chromedriver.exe', options=options)
     driver.get(tweet_url)
     sleep(5)
 
     try:
         element = driver.find_element_by_xpath("//span[contains(text(), '"+ name +"')]")
-        print(element)
-        driver.execute_script("arguments[0].innerText='"+ generate_nazbol_name() +"'", element)
+        driver.execute_script("arguments[0].innerText='"+ "&#127462;&#127485;" +"'", element)
     except NoSuchElementException:
         pass
 
@@ -65,18 +63,18 @@ def generate_image(tweet_url, name, driver):
     driver.get_screenshot_as_file("temp/capture.png")
 
 if __name__ == '__main__':
-    driver = webdriver.Chrome('C:/Users/manum/Desktop/nazbolizaBot/chromedriver.exe', options=options)
+    driver = webdriver.Chrome('/home/manel/nazbolizaBot/chromedriver', options=options)
     mentions = api.mentions_timeline(get_last_mention_id(), tweet_mode = 'extended')
 
     for mention in reversed(mentions):
-        if not '@nazbolizaBot' in mention.__dict__['full_text']:
+	if not '@nazbolizaBot' in mention.__dict__['full_text']:
             store_last_mention_id(mention.id)
             continue
 
         tweet_url = 'https://twitter.com/{}/status/{}'.format(mention.__dict__['author'].screen_name, mention.__dict__['id'])
-        generate_image(tweet_url, mention.__dict__['user'].name, driver)
-        
-        api.update_with_media("temp/capture.png", 
+        generate_image(tweet_url, mention.__dict__['user'], driver)
+
+        api.update_with_media("temp/capture.png",
         status="",
         in_reply_to_status_id=mention.id_str,
         auto_populate_reply_metadata=True
