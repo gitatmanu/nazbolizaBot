@@ -67,7 +67,7 @@ if __name__ == '__main__':
     mentions = api.mentions_timeline(get_last_mention_id(), tweet_mode = 'extended')
 
     for mention in reversed(mentions):
-	if not '@nazbolizaBot' in mention.__dict__['full_text']:
+        if not '@nazbolizaBot' in mention.__dict__['full_text']:
             store_last_mention_id(mention.id)
             continue
 
