@@ -10,12 +10,6 @@ from generate_nazbol_name import generate_nazbol_name
 
 from dotenv import load_dotenv
 load_dotenv()
-CONSUMER_KEY = os.getenv('CONSUMER_KEY')
-CONSUMER_SECRET = os.getenv('CONSUMER_SECRET')
-ACCESS_KEY = os.getenv('ACCESS_KEY')
-ACCESS_SECRET = os.getenv('ACCESS_SECRET')
-ACCOUNT_NAME = os.getenv('ACCOUNT_NAME')
-ACCOUNT_ID = os.getenv('ACCOUNT_ID')
 
 # Firefox webdriver
 options = webdriver.FirefoxOptions()
@@ -36,11 +30,11 @@ class Listener(StreamListener):
         if hasattr(tweet,'retweeted_status'): # If it is a retweet
             return
 
-        if '@'+bot_name not in tweet['text'].lower(): # Has not mentioned
+        if '@' + bot_name not in tweet['text'].lower(): # Has not mentioned
             return
 
 
-        if tweet['in_reply_to_status_id'] and tweet['text'].lower().count('@'+bot_name) == 1: # If it is a reply
+        if tweet['in_reply_to_status_id'] and tweet['text'].lower().count('@' + bot_name) == 1: # If it is a reply
             return
 
         print('Procesando tuit de: '+ tweet['user']['screen_name'])
@@ -52,6 +46,7 @@ def respond_tweet(tweet):
 
     tweet_url = 'https://twitter.com/{}/status/{}'.format(
         tweet['user']['screen_name'], tweet['id'])
+    
     generate_image(tweet_url, tweet['user']['name'])
 
     api.update_with_media("./capture.png",
@@ -60,20 +55,20 @@ def respond_tweet(tweet):
                             auto_populate_reply_metadata=True
                             )
 
+
 def set_up_auth():
-    auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-    auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+    auth = tweepy.OAuthHandler(os.getenv('CONSUMER_KEY'), os.getenv('CONSUMER_SECRET'))
+    auth.set_access_token(os.getenv('ACCESS_KEY'), os.getenv('ACCESS_SECRET'))
     api = tweepy.API(auth)
     return api, auth
+
 
 def follow_stream():
     api, auth = set_up_auth()
     listener = Listener(StreamListener)
     stream = Stream(auth, listener)
-    stream.filter(track=[ACCOUNT_NAME])
+    stream.filter(track=[os.getenv('ACCOUNT_NAME')])
 
-def document_initialised(driver):
-    return driver.execute_script("console.log('cargao')")
 
 def generate_image(tweet_url, name):
     # Init driver
@@ -83,7 +78,7 @@ def generate_image(tweet_url, name):
 
     # Modify HTML
     driver.get(tweet_url)
-    sleep(7)
+    sleep(8)
     try:
         nazbol_name = generate_nazbol_name()
         elements = driver.find_elements_by_xpath(
@@ -100,10 +95,12 @@ def generate_image(tweet_url, name):
         pass
 
     # Make capture
-    sleep(2)
+    sleep(1)
     driver.get_screenshot_as_file("capture.png")
     print('Procesado.')
     driver.quit()
+
+
 
 if __name__ == '__main__':
     follow_stream()
