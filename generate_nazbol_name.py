@@ -17,7 +17,7 @@ names = [
 "jacobino",
 "hoxhista"
 ]
-flags = ["\ud83c\uddf9\ud83c\uddec", "\ud83c\uddfb\ud83c\uddf3"]
+flags = ["🇪🇸", "🇮🇷", "🇵🇸", "🇱🇦", "🇰🇵", "🇻🇳", "🇨🇺"]
 symbols = ["⚒️","☭", "#SPEXIT"]
 
 def generate_nazbol_name():    
@@ -40,7 +40,7 @@ def generate_nazbol_name():
         if flag not in flag_string:
             flag_string += flag
 
-    message = first_name.capitalize() + " " + second_name.capitalize() + " "
+    message = first_name.capitalize() + second_name.capitalize() + " "
 
     if active_symbol:
         if first_position_symbol:

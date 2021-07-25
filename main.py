@@ -1,4 +1,4 @@
-import tweepy, os, emoji
+import tweepy, os
 
 from selenium import webdriver
 from selenium.webdriver.chrome.webdriver import WebDriver
@@ -17,12 +17,14 @@ ACCESS_KEY = os.getenv('ACCESS_KEY')
 ACCESS_SECRET = os.getenv('ACCESS_SECRET')
 
 # Chrome webdriver
-options = webdriver.ChromeOptions()
-options.add_argument('--start-maximized')
-options.add_argument('--start-maximized')
+options = webdriver.FirefoxOptions()
 options.add_argument('--disable-extensions')
 options.add_argument("--headless")
-options.add_experimental_option("mobileEmulation", { "deviceName": "Pixel 2" })
+
+user_agent = 'Mozilla/5.0 (Linux; Android 7.0; SM-G892A Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/67.0.3396.87 Mobile Safari/537.36'
+profile = webdriver.FirefoxProfile()
+profile.set_preference('general.useragent.override', user_agent)
+
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
@@ -50,30 +52,42 @@ def document_initialised(driver):
 
 def generate_image(tweet_url, name, driver):
     # Scrap web and modify HTML
+    driver.set_window_position(0,0)
+    driver.set_window_size(366, 1300)
     driver.get(tweet_url)
-    sleep(5)
-
+    sleep(10)
     try:
-        element = driver.find_element_by_xpath("//span[contains(text(), '"+ name +"')]")
-        element.send_keys("\ud83c\uddf9\ud83c\uddec \ud83c\uddfb\ud83c\uddf3")
-        driver.execute_script("arguments[0].textContent='"+ generate_nazbol_name() +"'", element)
+        nazbol_name = generate_nazbol_name()
+        elements = driver.find_elements_by_xpath("//span[contains(text(), '"+ name +"')]")
+        print(elements)
+        JS_ADD_TEXT_TO_INPUT = """
+        arguments[0].textContent="{}"
+        var elm = arguments[0];
+        elm.dispatchEvent(new Event('change'));
+        """.format(nazbol_name)
+
+        for element in elements:
+            driver.execute_script(JS_ADD_TEXT_TO_INPUT, element)
     except NoSuchElementException:
         pass
 
     # Make capture
+    sleep(5)
     driver.get_screenshot_as_file("temp/capture.png")
 
 if __name__ == '__main__':
-    driver = webdriver.Chrome('/home/manel/nazbolizaBot/chromedriver', options=options)
+    filename = os.path.join(os.path.dirname(__file__), 'drivers/geckodriver.exe')
+    driver = webdriver.Firefox(executable_path=filename, options=options, firefox_profile=profile)
+
     mentions = api.mentions_timeline(get_last_mention_id(), tweet_mode = 'extended')
 
     for mention in reversed(mentions):
-        if not '@nazbolizaBot' in mention.__dict__['full_text']:
+        if 'nazbolizaBot' in mention.__dict__['author'].screen_name:
             store_last_mention_id(mention.id)
             continue
 
         tweet_url = 'https://twitter.com/{}/status/{}'.format(mention.__dict__['author'].screen_name, mention.__dict__['id'])
-        generate_image(tweet_url, mention.__dict__['user'].screen_name, driver)
+        generate_image(tweet_url, mention.__dict__['user'].name, driver)
 
         api.update_with_media("temp/capture.png",
         status="",
