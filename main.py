@@ -98,7 +98,7 @@ def generate_image(tweet_url, name):
     sleep(1)
     driver.get_screenshot_as_file("capture.png")
     print('Procesado.')
-    driver.quit()
+    driver.close()
 
 
 
