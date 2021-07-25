@@ -1,3 +1,5 @@
+import random
+
 names = [
 "stalin",
 "patriota",
@@ -15,17 +17,35 @@ names = [
 "socialismo",
 "1953",
 "jacobino",
-"hoxhista"
+"hoxhaista"
 ]
 flags = ["🇪🇸", "🇮🇷", "🇵🇸", "🇱🇦", "🇰🇵", "🇻🇳", "🇨🇺"]
 symbols = ["⚒️","☭", "#SPEXIT"]
 
-def generate_nazbol_name():    
-    import random
 
-    first_position_symbol = random.randint(0, 1)
+def generate_nazbol_name():    
+    name = get_name()
+    flags = get_flags()
+
+    full_name = name + " "
+
     active_symbol = random.randint(0, 1)
-    flag_number = random.randint(1, len(flags) - 1)
+    if active_symbol:
+        first_position_symbol = random.randint(0, 1)
+        if first_position_symbol:
+            full_name += symbols[random.randint(0, len(symbols) - 1)]
+            full_name += flags
+        else:
+            full_name += flags
+            full_name += symbols[random.randint(0, len(symbols) - 1)]
+    else:
+        full_name += flags
+
+    return full_name
+
+
+
+def get_name():
     first_name = names[random.randint(0, len(names) - 1)]
     second_name = names[random.randint(0, len(names) - 1)]
 
@@ -33,23 +53,16 @@ def generate_nazbol_name():
         first_name = names[random.randint(0, len(names) - 1)]
         second_name = names[random.randint(0, len(names) - 1)]
 
+    return first_name.capitalize() + second_name.capitalize()
+
+
+def get_flags():
     flag_string = ""
-    for i in range(flag_number):
+
+    for i in range(random.randint(1, len(flags) - 1)):
         flag = flags[random.randint(0, len(flags) - 1)]
 
         if flag not in flag_string:
             flag_string += flag
 
-    message = first_name.capitalize() + second_name.capitalize() + " "
-
-    if active_symbol:
-        if first_position_symbol:
-            message += symbols[random.randint(0, len(symbols) - 1)]
-            message += flag_string
-        else:
-            message += flag_string
-            message += symbols[random.randint(0, len(symbols) - 1)]
-    else:
-        message += flag_string
-
-    return message
+        return flag_string
