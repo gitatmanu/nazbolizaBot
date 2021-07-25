@@ -29,10 +29,21 @@ profile.set_preference('general.useragent.override', user_agent)
 class Listener(StreamListener):
     def on_data(self, tweet):
         tweet = json.loads(tweet)
-
-        if not '@nazbolizaBot' in tweet['text']:
+        bot_name = 'nazbolizabot'
+        if tweet['user']['screen_name'].lower() == bot_name: # If it is a bot interaction
             return
 
+        if hasattr(tweet,'retweeted_status'): # If it is a retweet
+            return
+
+        if '@'+bot_name not in tweet['text'].lower(): # Has not mentioned
+            return
+
+
+        if tweet['in_reply_to_status_id'] and tweet['text'].lower().count('@'+bot_name) == 1: # If it is a reply
+            return
+
+        print('Procesando tuit de: '+ tweet['user']['screen_name'])
         respond_tweet(tweet)
 
 
@@ -68,11 +79,11 @@ def generate_image(tweet_url, name):
     # Init driver
     driver = webdriver.Firefox(executable_path=executable_path, options=options, firefox_profile=profile)
     driver.set_window_position(0, 0)
-    driver.set_window_size(366, 1800)
+    driver.set_window_size(500, 700)
 
     # Modify HTML
     driver.get(tweet_url)
-    sleep(6)
+    sleep(7)
     try:
         nazbol_name = generate_nazbol_name()
         elements = driver.find_elements_by_xpath(
@@ -89,8 +100,9 @@ def generate_image(tweet_url, name):
         pass
 
     # Make capture
-    sleep(5)
+    sleep(2)
     driver.get_screenshot_as_file("temp/capture.png")
+    print('Procesado.')
     driver.close()
 
 if __name__ == '__main__':

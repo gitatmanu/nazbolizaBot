@@ -65,4 +65,4 @@ def get_flags():
         if flag not in flag_string:
             flag_string += flag
 
-        return flag_string
+    return flag_string
