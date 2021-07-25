@@ -17,7 +17,7 @@ names = [
 "jacobino",
 "hoxhista"
 ]
-flags = ["\u1F1EA\u1F1F8", "\u1F1E7\u1F1FE"]
+flags = ["\ud83c\uddf9\ud83c\uddec", "\ud83c\uddfb\ud83c\uddf3"]
 symbols = ["⚒️","☭", "#SPEXIT"]
 
 def generate_nazbol_name():    
