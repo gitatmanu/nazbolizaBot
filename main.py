@@ -1,5 +1,7 @@
 import os, json, tweepy
 from time import sleep
+from dotenv import load_dotenv
+load_dotenv()
 from tweepy import Stream
 from tweepy.streaming import StreamListener
 
@@ -8,17 +10,15 @@ from selenium.common.exceptions import NoSuchElementException
 
 from generate_nazbol_name import generate_nazbol_name
 
-from dotenv import load_dotenv
-load_dotenv()
-
 # Firefox webdriver
 options = webdriver.FirefoxOptions()
 options.add_argument('--disable-extensions')
 options.add_argument("--headless")
-executable_path = os.path.join(os.path.dirname(__file__), 'drivers/geckodriver.exe')
+executable_path = os.path.join(os.path.dirname(__file__), 'drivers/geckodriver')
 user_agent = 'Mozilla/5.0 (Linux; Android 7.0; SM-G892A Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/67.0.3396.87 Mobile Safari/537.36'
 profile = webdriver.FirefoxProfile()
 profile.set_preference('general.useragent.override', user_agent)
+
 
 class Listener(StreamListener):
     def on_data(self, tweet):
