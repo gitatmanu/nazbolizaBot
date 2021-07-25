@@ -424,7 +424,8 @@ console.warn: services.settings: main/doh-config Signature verified failed. Retr
 console.log: WebExtensions: reset-default-search: starting.
 console.log: WebExtensions: reset-default-search: No addons in our list are installed.
 JavaScript error: , line 0: NS_ERROR_NOT_AVAILABLE
-4372359	Marionette	INFO	Stopped listening on port 54720
+Exiting due to channel error.
+ listening on port 54720
 
 ###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
 
@@ -470,9 +471,11 @@ JavaScript error: , line 0: NS_ERROR_NOT_AVAILABLE
 
 ###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
 
-le" "C:\\Users\\manum\\AppData\\Local\\Temp\\rust_mozprofilePbSkM7"
-*** You are running in headless mode.
-1627224655251	Marionette	INFO	Marionette enabled
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+Exiting due to channel error.
+NFO	Marionette enabled
 [GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\manum\\AppData\\Local\\Temp\\rust_mozprofilePbSkM7\\search.json.mozlz4", (void 0)))
 1627224656805	Marionette	INFO	Listening on port 55005
@@ -646,10 +649,10 @@ console.log: WebExtensions: reset-default-search: No addons in our list are inst
 ###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
 
 JavaScript error: , line 0: NS_ERROR_NOT_AVAILABLE
-sing: too late to send/recv, messages will be lost
 
-console.error: services.settings: 
-  main/doh-providers Signature failed  InvalidSignatureError: Invalid content signature (main/doh-providers)
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+roviders Signature failed  InvalidSignatureError: Invalid content signature (main/doh-providers)
 console.error: services.settings: 
   main/doh-providers local data was corrupted
 console.warn: services.settings: main/doh-providers Signature verified failed. Retry from scratch
@@ -723,6 +726,18 @@ console.warn: SearchSettings: "get: No settings file exists, new profile?" (new 
 1627226773857	Marionette	INFO	Listening on port 55901
 1627226773895	Marionette	WARN	TLS certificate errors will be ignored for this session
 1627226784304	Marionette	INFO	Stopped listening on port 55901
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1627227189459	geckodriver	INFO	Listening on 127.0.0.1:56137
+1627227192514	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--disable-extensions" "--headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\manum\\AppData\\Local\\Temp\\rust_mozprofile6othPu"
+*** You are running in headless mode.
+1627227193002	Marionette	INFO	Marionette enabled
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\manum\\AppData\\Local\\Temp\\rust_mozprofile6othPu\\search.json.mozlz4", (void 0)))
+1627227194838	Marionette	INFO	Listening on port 56145
+1627227195221	Marionette	WARN	TLS certificate errors will be ignored for this session
+1627227205677	Marionette	INFO	Stopped listening on port 56145
 
 ###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
 

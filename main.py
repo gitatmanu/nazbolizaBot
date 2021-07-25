@@ -54,7 +54,7 @@ def respond_tweet(tweet):
         tweet['user']['screen_name'], tweet['id'])
     generate_image(tweet_url, tweet['user']['name'])
 
-    api.update_with_media("temp/capture.png",
+    api.update_with_media("./capture.png",
                             status="",
                             in_reply_to_status_id=tweet['id_str'],
                             auto_populate_reply_metadata=True
@@ -77,7 +77,7 @@ def document_initialised(driver):
 
 def generate_image(tweet_url, name):
     # Init driver
-    driver = webdriver.Firefox(executable_path=executable_path, options=options, firefox_profile=profile)
+    driver = webdriver.Firefox(executable_path=executable_path, options=options, firefox_profile=profile, service_log_path=os.devnull)
     driver.set_window_position(0, 0)
     driver.set_window_size(500, 700)
 
@@ -101,9 +101,9 @@ def generate_image(tweet_url, name):
 
     # Make capture
     sleep(2)
-    driver.get_screenshot_as_file("temp/capture.png")
+    driver.get_screenshot_as_file("capture.png")
     print('Procesado.')
-    driver.close()
+    driver.quit()
 
 if __name__ == '__main__':
     follow_stream()
