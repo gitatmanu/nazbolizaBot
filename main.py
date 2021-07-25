@@ -23,7 +23,7 @@ profile.set_preference('general.useragent.override', user_agent)
 class Listener(StreamListener):
     def on_data(self, tweet):
         tweet = json.loads(tweet)
-        bot_name = 'nazbolizabot'
+        bot_name = 'nazbot_'
         if tweet['user']['screen_name'].lower() == bot_name: # If it is a bot interaction
             return
 
