@@ -55,7 +55,7 @@ def generate_image(tweet_url, name, driver):
 
     try:
         element = driver.find_element_by_xpath("//span[contains(text(), '"+ name +"')]")
-        driver.execute_script("arguments[0].innerText='"+ emoji.emojize("\U0001f1e6\U0001f1e9") +"'", element)
+        driver.execute_script("arguments[0].textContent='"+ "\u00A5" + generate_nazbol_name() +"'", element)
     except NoSuchElementException:
         pass
 
@@ -72,7 +72,7 @@ if __name__ == '__main__':
             continue
 
         tweet_url = 'https://twitter.com/{}/status/{}'.format(mention.__dict__['author'].screen_name, mention.__dict__['id'])
-        generate_image(tweet_url, mention.__dict__['user'], driver)
+        generate_image(tweet_url, mention.__dict__['user'].screen_name, driver)
 
         api.update_with_media("temp/capture.png",
         status="",
