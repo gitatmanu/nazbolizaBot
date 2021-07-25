@@ -55,6 +55,7 @@ def generate_image(tweet_url, name, driver):
 
     try:
         element = driver.find_element_by_xpath("//span[contains(text(), '"+ name +"')]")
+        element.send_keys("\ud83c\uddf9\ud83c\uddec \ud83c\uddfb\ud83c\uddf3")
         driver.execute_script("arguments[0].textContent='"+ generate_nazbol_name() +"'", element)
     except NoSuchElementException:
         pass
