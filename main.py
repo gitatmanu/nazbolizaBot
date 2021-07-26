@@ -10,16 +10,6 @@ from selenium.common.exceptions import NoSuchElementException
 
 from generate_nazbol_name import generate_nazbol_name
 
-# Firefox webdriver
-options = webdriver.FirefoxOptions()
-options.add_argument('--disable-extensions')
-options.add_argument("--headless")
-executable_path = os.path.join(os.path.dirname(__file__), 'drivers/geckodriver')
-user_agent = 'Mozilla/5.0 (Linux; Android 7.0; SM-G892A Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/67.0.3396.87 Mobile Safari/537.36'
-profile = webdriver.FirefoxProfile()
-profile.set_preference('general.useragent.override', user_agent)
-
-
 class Listener(StreamListener):
     def on_data(self, tweet):
         tweet = json.loads(tweet)
@@ -33,12 +23,13 @@ class Listener(StreamListener):
         if '@' + bot_name not in tweet['text'].lower(): # Has not mentioned
             return
 
-
         if tweet['in_reply_to_status_id'] and tweet['text'].lower().count('@' + bot_name) == 1: # If it is a reply
             return
 
         print('Procesando tuit de: '+ tweet['user']['screen_name'])
         respond_tweet(tweet)
+        print('Procesado.')
+
 
 
 def respond_tweet(tweet):
@@ -70,6 +61,15 @@ def follow_stream():
 
 
 def generate_image(tweet_url, name):
+    # Firefox webdriver
+    options = webdriver.FirefoxOptions()
+    options.add_argument('--disable-extensions')
+    options.add_argument("--headless")
+    executable_path = os.path.join(os.path.dirname(__file__), 'drivers/geckodriver')
+    user_agent = 'Mozilla/5.0 (Linux; Android 7.0; SM-G892A Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/67.0.3396.87 Mobile Safari/537.36'
+    profile = webdriver.FirefoxProfile()
+    profile.set_preference('general.useragent.override', user_agent)
+    
     # Init driver
     driver = webdriver.Firefox(executable_path=executable_path, options=options, firefox_profile=profile, service_log_path=os.devnull)
     driver.set_window_position(0, 0)
@@ -77,35 +77,36 @@ def generate_image(tweet_url, name):
 
     # Modify HTML
     driver.get(tweet_url)
-    sleep(8)
+    sleep(6)
     try:
         nazbol_name = generate_nazbol_name()
-        elements = driver.find_elements_by_xpath("//a[@href='/" + name + "']//div/div[1]/div[1]//span")
-        print(elements)
-        JS_ADD_TEXT_TO_INPUT = """
-        var images = arguments[0].getElementsByTagName('img');
-        var l = images.length;
-        for (var i = 0; i < l; i++) {{
-            if (arguments[0].contains(images[i])) {{
-                arguments[0].removeChild(images[i]);
-            }}
-        }}
+        name_fields = driver.find_elements_by_xpath("//a[@href='/" + name + "']//div/div[1]/div[1]//span//span")
+        images = driver.find_elements_by_xpath("//a[@href='/" + name + "']//div/div[1]/div[1]//span//img")
+        root_tag = driver.find_elements_by_xpath("//a[@href='/" + name + "']//div/div[1]/div[1]//span")
 
-        arguments[0].getElementsByTagName('span')[0].textContent='{}';
-        var elm = arguments[0].getElementsByTagName('span')[0];
+        NAME_FIELD_JS = """
+        arguments[0].textContent='{}';
+        var elm = arguments[0];
         elm.dispatchEvent(new Event('change'));
         """.format(nazbol_name)
 
-        for element in elements:
-            driver.execute_script(JS_ADD_TEXT_TO_INPUT, element)
+        IMAGES_JS = """
+        arguments[0].remove();
+        """
+
+        for image in images:
+            driver.execute_script(IMAGES_JS, image)
+
+        for name_field in name_fields:
+            driver.execute_script(NAME_FIELD_JS, name_field)
     except NoSuchElementException:
         pass
     
     # Make capture
     sleep(1)
     driver.get_screenshot_as_file("capture.png")
-    print('Procesado.')
     driver.close()
+    driver.quit()
 
 
 
