@@ -21,7 +21,7 @@ class Listener(StreamListener):
         if '@' + bot_name not in tweet['text'].lower(): # Has not mentioned
             return
 
-        if tweet['in_reply_to_status_id'] and tweet['text'].lower().count('@' + bot_name) == 1: # If it is a reply
+        if tweet['in_reply_to_status_id'] and tweet['text'].lower().count('@' + bot_name) != 1: # If it is a reply
             return
 
         print('Procesando tuit de: '+ tweet['user']['screen_name'])
