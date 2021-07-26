@@ -28,25 +28,9 @@ symbols = ["⚒️","☭", "#SPEXIT", "FO", "(RC)"]
 
 
 def generate_nazbol_name():    
-    name = get_name()
-    flags = get_flags()
-
-    full_name = name + " "
-
-    active_symbol = random.randint(0, 1)
-    if active_symbol:
-        first_position_symbol = random.randint(0, 1)
-        if first_position_symbol:
-            full_name += symbols[random.randint(0, len(symbols) - 1)]
-            full_name += flags
-        else:
-            full_name += flags
-            full_name += symbols[random.randint(0, len(symbols) - 1)]
-    else:
-        full_name += flags
+    full_name = get_name() + ' ' + get_decorators()
 
     return full_name
-
 
 
 def get_name():
@@ -57,16 +41,34 @@ def get_name():
         first_name = names[random.randint(0, len(names) - 1)]
         second_name = names[random.randint(0, len(names) - 1)]
 
-    return first_name.capitalize() + second_name.capitalize()
+    return first_name.capitalize() + second_name.capitalize() 
 
 
 def get_flags():
-    flag_string = ""
+    flag_str = ""
 
     for i in range(random.randint(1, len(flags) - 1)):
         flag = flags[random.randint(0, len(flags) - 1)]
 
-        if flag not in flag_string:
-            flag_string += flag
+        if flag not in flag_str:
+            flag_str += flag
 
-    return flag_string
+    return flag_str
+
+
+def get_decorators():
+    decorators = ''
+    decorator = symbols[random.randint(0, len(symbols) - 1)]
+    flags_str = get_flags()
+
+    active_symbol = random.randint(0, 1)
+    if active_symbol:
+        first_position_symbol = random.randint(0, 1)
+        if first_position_symbol:
+            decorators += flags_str + decorator
+        else:
+            decorators += decorator + flags_str
+    else:
+        decorators += flags_str
+
+    return decorators

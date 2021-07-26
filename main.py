@@ -13,7 +13,8 @@ from generate_nazbol_name import generate_nazbol_name
 class Listener(StreamListener):
     def on_data(self, tweet):
         tweet = json.loads(tweet)
-        bot_name = 'nazbot_'
+        bot_name = os.getenv('ACCOUNT_NAME')
+
         if tweet['user']['screen_name'].lower() == bot_name: # If it is a bot interaction
             return
 
@@ -27,12 +28,12 @@ class Listener(StreamListener):
             return
 
         print('Procesando tuit de: '+ tweet['user']['screen_name'])
-        respond_tweet(tweet)
+        reply_tweet(tweet)
         print('Procesado.')
 
 
 
-def respond_tweet(tweet):
+def reply_tweet(tweet):
     api, auth = set_up_auth()
 
     tweet_url = 'https://twitter.com/{}/status/{}'.format(
@@ -77,12 +78,11 @@ def generate_image(tweet_url, name):
 
     # Modify HTML
     driver.get(tweet_url)
-    sleep(6)
+    sleep(5)
     try:
         nazbol_name = generate_nazbol_name()
         name_fields = driver.find_elements_by_xpath("//a[@href='/" + name + "']//div/div[1]/div[1]//span//span")
-        images = driver.find_elements_by_xpath("//a[@href='/" + name + "']//div/div[1]/div[1]//span//img")
-        root_tag = driver.find_elements_by_xpath("//a[@href='/" + name + "']//div/div[1]/div[1]//span")
+        emoji_images = driver.find_elements_by_xpath("//a[@href='/" + name + "']//div/div[1]/div[1]//span//img")
 
         NAME_FIELD_JS = """
         arguments[0].textContent='{}';
@@ -94,8 +94,8 @@ def generate_image(tweet_url, name):
         arguments[0].remove();
         """
 
-        for image in images:
-            driver.execute_script(IMAGES_JS, image)
+        for emoji_image in emoji_images: # Removes username emojis, Twitter render them as <img> 
+            driver.execute_script(IMAGES_JS, emoji_image)
 
         for name_field in name_fields:
             driver.execute_script(NAME_FIELD_JS, name_field)
@@ -103,7 +103,6 @@ def generate_image(tweet_url, name):
         pass
     
     # Make capture
-    sleep(1)
     driver.get_screenshot_as_file("capture.png")
     driver.close()
     driver.quit()
