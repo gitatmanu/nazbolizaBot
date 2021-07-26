@@ -65,9 +65,9 @@ def get_decorators():
     if active_symbol:
         first_position_symbol = random.randint(0, 1)
         if first_position_symbol:
-            decorators += flags_str + decorator
-        else:
             decorators += decorator + flags_str
+        else:
+            decorators += flags_str + decorator
     else:
         decorators += flags_str
 
