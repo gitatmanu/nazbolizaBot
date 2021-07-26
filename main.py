@@ -75,7 +75,7 @@ def generate_image(tweet_url, name):
 
     # Modify HTML
     driver.get(tweet_url)
-    sleep(5)
+    sleep(3)
     try:
         nazbol_name = generate_nazbol_name()
         name_fields = driver.find_elements_by_xpath("//a[@href='/" + name + "']//div/div[1]/div[1]//span//span")
