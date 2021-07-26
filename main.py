@@ -47,14 +47,13 @@ def respond_tweet(tweet):
     tweet_url = 'https://twitter.com/{}/status/{}'.format(
         tweet['user']['screen_name'], tweet['id'])
     
-    generate_image(tweet_url, tweet['user']['name'])
+    generate_image(tweet_url, tweet['user']['screen_name'])
 
     api.update_with_media("./capture.png",
                             status="",
                             in_reply_to_status_id=tweet['id_str'],
                             auto_populate_reply_metadata=True
                             )
-
 
 def set_up_auth():
     auth = tweepy.OAuthHandler(os.getenv('CONSUMER_KEY'), os.getenv('CONSUMER_SECRET'))
@@ -81,11 +80,19 @@ def generate_image(tweet_url, name):
     sleep(8)
     try:
         nazbol_name = generate_nazbol_name()
-        elements = driver.find_elements_by_xpath(
-            "//span[contains(text(), '" + name + "')]")
+        elements = driver.find_elements_by_xpath("//a[@href='/" + name + "']//div/div[1]/div[1]//span")
+        print(elements)
         JS_ADD_TEXT_TO_INPUT = """
-        arguments[0].textContent="{}"
-        var elm = arguments[0];
+        var images = arguments[0].getElementsByTagName('img');
+        var l = images.length;
+        for (var i = 0; i < l; i++) {{
+            if (arguments[0].contains(images[i])) {{
+                arguments[0].removeChild(images[i]);
+            }}
+        }}
+
+        arguments[0].getElementsByTagName('span')[0].textContent='{}';
+        var elm = arguments[0].getElementsByTagName('span')[0];
         elm.dispatchEvent(new Event('change'));
         """.format(nazbol_name)
 
@@ -93,7 +100,7 @@ def generate_image(tweet_url, name):
             driver.execute_script(JS_ADD_TEXT_TO_INPUT, element)
     except NoSuchElementException:
         pass
-
+    
     # Make capture
     sleep(1)
     driver.get_screenshot_as_file("capture.png")
