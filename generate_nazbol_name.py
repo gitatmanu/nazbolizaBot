@@ -17,10 +17,14 @@ names = [
 "socialismo",
 "1953",
 "jacobino",
-"hoxhaista"
+"hoxhaista",
+"socialista",
+"nacional",
+"patriotismo",
+"guardia",
 ]
 flags = ["🇪🇸", "🇮🇷", "🇵🇸", "🇱🇦", "🇰🇵", "🇻🇳", "🇨🇺"]
-symbols = ["⚒️","☭", "#SPEXIT"]
+symbols = ["⚒️","☭", "#SPEXIT", "FO", "(RC)"]
 
 
 def generate_nazbol_name():    
