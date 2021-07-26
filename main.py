@@ -18,9 +18,6 @@ class Listener(StreamListener):
         if tweet['user']['screen_name'].lower() == bot_name: # If it is a bot interaction
             return
 
-        if tweet['retweeted_status']: # If it is a retweet
-            return
-
         if '@' + bot_name not in tweet['text'].lower(): # Has not mentioned
             return
 
