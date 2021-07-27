@@ -18,6 +18,8 @@ class Listener(StreamListener):
         tweet = json.loads(tweet)
         replied_tweet = get_replied_tweet(tweet) if get_replied_tweet(tweet) else tweet
 
+        if replied_tweet['user']['screen_name'] == bot_name:
+            return
         # Not explicit mention to bot
         if hasattr(tweet,'display_text_range'):
             if '@' + bot_name not in tweet.text[tweet.display_text_range[0]:].lower():
