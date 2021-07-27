@@ -65,7 +65,7 @@ def reply_tweet(tweet):
 def get_replied_tweet(tweet):
     api, auth = set_up_auth()
     try:
-        replied_tweet = api.get_status(tweet.in_reply_to_status_id)
+        replied_tweet = api.get_status(tweet['in_reply_to_status_id'])
     except Exception as e:
         print(e)
         return
