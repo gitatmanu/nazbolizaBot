@@ -15,7 +15,7 @@ from generate_nazbol_name import generate_nazbol_name
 class Listener(StreamListener):
     def on_data(self, tweet):
         bot_name = os.getenv('ACCOUNT_NAME')
-        replied_tweet = json.loads(get_replied_tweet(tweet))
+        replied_tweet = json.loads(get_replied_tweet(tweet['in_reply_to_status_id']))
         tweet = json.loads(tweet)
 
         if replied_tweet['user']['screen_name'] == bot_name:
@@ -62,10 +62,10 @@ def reply_tweet(tweet):
                             )
 
 
-def get_replied_tweet(tweet):
+def get_replied_tweet(tweet_id):
     api, auth = set_up_auth()
     try:
-        replied_tweet = api.get_status(tweet.in_reply_to_status_id)
+        replied_tweet = api.get_status(tweet_id)
     except Exception as e:
         print(e)
         return
