@@ -16,19 +16,19 @@ class Listener(StreamListener):
     def on_data(self, tweet):
         bot_name = os.getenv('ACCOUNT_NAME')
         tweet = json.loads(tweet)
-        replied_tweet = json.loads(get_replied_tweet(tweet['in_reply_to_status_id']))
+        replied_tweet = get_replied_tweet(tweet['in_reply_to_status_id']).__dict__['_json']
+        tweet = replied_tweet if replied_tweet else tweet
 
-        if replied_tweet['user']['screen_name'] == bot_name:
-            return
         # Not explicit mention to bot
         if hasattr(tweet,'display_text_range'):
-            if '@' + bot_name not in tweet.text[tweet.display_text_range[0]:].lower():
+            if '@' + bot_name not in tweet['text'][tweet['display_text_range'][0]:].lower():
                 return
         if hasattr(tweet,'retweeted_status'):
             return
 
+
         print('Procesando tuit de: '+ tweet['user']['screen_name'])
-        reply_tweet(replied_tweet)
+        reply_tweet(tweet)
         print('Procesado.')
 
 
