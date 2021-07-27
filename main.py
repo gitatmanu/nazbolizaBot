@@ -16,7 +16,7 @@ class Listener(StreamListener):
     def on_data(self, tweet):
         bot_name = os.getenv('ACCOUNT_NAME')
         tweet = json.loads(tweet)
-        replied_tweet = get_replied_tweet(tweet) if get_replied_tweet(tweet) else tweet
+        replied_tweet = json.loads(get_replied_tweet(tweet)) if json.loads(get_replied_tweet(tweet)) else tweet
 
         if replied_tweet['user']['screen_name'] == bot_name:
             return
