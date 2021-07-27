@@ -6,13 +6,13 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 ## Deployment
 First of all, you need to get and install dependencies.
-- Firefox Browser (Selenium WebDriver needs binaries)
-- Geckodriver (What Selenium uses to run web browser, in 'drivers/' folder)
-- pip packages (All in 'requirements.txt' file. To install, you need first python3-pip apt package manager. Then, install them with command 'pip install -r requirements.txt')
-- environment variables (To connect to Twitter API and other things, you need to get the access tokens from a Twitter developer account.)
-- - CONSUMER_KEY
-- - CONSUMER_SECRET
-- - ACCESS_KEY
-- - ACCESS_SECRET
-- - ACCOUNT_ID
-- - ACCOUNT_NAME
+- **Firefox Browser** (Selenium WebDriver needs binaries)
+- **Geckodriver** (What Selenium uses to run web browser, in 'drivers/' folder)
+- **pip packages** (All in 'requirements.txt' file. To install, you need first python3-pip apt package manager. Then, install them with command 'pip install -r requirements.txt')
+- **environment variables** (To connect to Twitter API and other things, you need to get the access tokens from a Twitter developer account.)
+  - CONSUMER_KEY
+  - CONSUMER_SECRET
+  - ACCESS_KEY
+  - ACCESS_SECRET
+  - ACCOUNT_ID
+  - ACCOUNT_NAME
