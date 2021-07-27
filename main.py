@@ -4,12 +4,9 @@ from dotenv import load_dotenv
 load_dotenv()
 from tweepy import Stream
 from tweepy.streaming import StreamListener
-
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
-
 from generate_nazbol_name import generate_nazbol_name
-
 
 
 class Listener(StreamListener):
@@ -73,22 +70,7 @@ def get_replied_tweet(tweet_id):
 
 
 def generate_image(tweet_url, name):
-    # Firefox webdriver
-    options = webdriver.FirefoxOptions()
-    options.add_argument('--disable-extensions')
-    options.add_argument("--headless")
-    
-    user_agent = 'Mozilla/5.0 (Linux; Android 7.0; SM-G892A Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/67.0.3396.87 Mobile Safari/537.36'
-    executable_path = os.path.join(os.path.dirname(__file__), 'drivers/geckodriver')
-    
-    profile = webdriver.FirefoxProfile()
-    profile.set_preference('general.useragent.override', user_agent)
-    
-    
-    # Init driver
-    driver = webdriver.Firefox(executable_path=executable_path, options=options, firefox_profile=profile, service_log_path=os.devnull)
-    driver.set_window_position(0, 0)
-    driver.set_window_size(500, 700)
+    driver = init_driver()
 
     # Modify HTML
     driver.get(tweet_url)
@@ -121,6 +103,25 @@ def generate_image(tweet_url, name):
     driver.close()
     driver.quit()
 
+
+def init_driver():
+    user_agent = 'Mozilla/5.0 (Linux; Android 7.0; SM-G892A Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/67.0.3396.87 Mobile Safari/537.36'
+    executable_path = os.path.join(os.path.dirname(__file__), 'drivers/geckodriver')
+    
+    # Firefox webdriver
+    options = webdriver.FirefoxOptions()
+    options.add_argument('--disable-extensions')
+    options.add_argument("--headless")
+    
+    profile = webdriver.FirefoxProfile()
+    profile.set_preference('general.useragent.override', user_agent)
+    
+    # Init driver
+    driver = webdriver.Firefox(executable_path=executable_path, options=options, firefox_profile=profile, service_log_path=os.devnull)
+    driver.set_window_position(0, 0)
+    driver.set_window_size(500, 700)
+
+    return driver
 
 
 if __name__ == '__main__':
