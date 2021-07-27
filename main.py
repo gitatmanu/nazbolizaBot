@@ -15,8 +15,8 @@ from generate_nazbol_name import generate_nazbol_name
 class Listener(StreamListener):
     def on_data(self, tweet):
         bot_name = os.getenv('ACCOUNT_NAME')
-        replied_tweet = json.loads(get_replied_tweet(tweet['in_reply_to_status_id']))
         tweet = json.loads(tweet)
+        replied_tweet = json.loads(get_replied_tweet(tweet['in_reply_to_status_id']))
 
         if replied_tweet['user']['screen_name'] == bot_name:
             return
