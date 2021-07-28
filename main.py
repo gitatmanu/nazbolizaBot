@@ -13,20 +13,21 @@ class Listener(StreamListener):
     def on_data(self, tweet):
         bot_name = os.getenv('ACCOUNT_NAME')
         tweet = json.loads(tweet)
-        replied_tweet = get_replied_tweet(tweet['in_reply_to_status_id']).__dict__['_json']
-        tweet = replied_tweet if replied_tweet else tweet
 
-        # Not explicit mention to bot
-        if hasattr(tweet,'display_text_range'):
-            if '@' + bot_name not in tweet['text'][tweet['display_text_range'][0]:].lower():
-                return
         if hasattr(tweet,'retweeted_status'):
             return
+        if tweet['in_reply_to_status_id'] is None:
+            return
 
+        try:
+            replied_tweet = get_replied_tweet(tweet['in_reply_to_status_id']).__dict__['_json']
 
-        print('Procesando tuit de: '+ tweet['user']['screen_name'])
-        reply_tweet(tweet)
-        print('Procesado.')
+            print('Procesando tuit de: '+ replied_tweet['user']['screen_name'])
+            reply_tweet(replied_tweet)
+            print('Procesado.')
+        except Exception as e:
+            return
+
 
 
 
@@ -86,9 +87,7 @@ def generate_image(tweet_url, name):
         elm.dispatchEvent(new Event('change'));
         """.format(nazbol_name)
 
-        IMAGES_JS = """
-        arguments[0].remove();
-        """
+        IMAGES_JS = """arguments[0].remove();"""
 
         for emoji_image in emoji_images: # Removes username emojis, Twitter render them as <img> 
             driver.execute_script(IMAGES_JS, emoji_image)
@@ -98,8 +97,8 @@ def generate_image(tweet_url, name):
     except NoSuchElementException:
         pass
     
-    # Make capture
     driver.get_screenshot_as_file("capture.png")
+
     driver.close()
     driver.quit()
 
