@@ -11,7 +11,7 @@ You have to mention the Twitter bot account ([@nazbot_](https://twitter.com/nazb
 ## Deployment
 ### Dependencies
 - **Firefox Browser** (Selenium WebDriver needs binaries, [install](https://www.mozilla.org/es-ES/firefox/new/) on your system)
-- **Geckodriver** (What Selenium uses to run web browser, in 'drivers/' folder)
+- **Geckodriver** (What Selenium uses to run browser web driver, in 'drivers/' folder)
 - **pip packages** (All in 'requirements.txt' file. To install, you need first python3-pip apt package manager. Then, install them with command 'pip install -r requirements.txt')
 - **environment variables** (To connect to Twitter API and other things, you need to get the access tokens from a Twitter developer account. Then, load with an .env file and dotenv pip package)
 ~~~
