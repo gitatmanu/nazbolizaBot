@@ -4,6 +4,8 @@ It's a Twitter bot that interacts with user mentions, sending tweet capture to t
 
 ## How it works?
 You have to mention to the Twitter bot account ([@nazbot_](https://twitter.com/nazbot_)). Then, it will reply you with a capture of the tweet that you replied with his nickname changed.
+![a](/docs/howitworks_1.jpg)
+![b](/docs/howitworks_2.jpg)
 
 ## Deployment
 ### Dependencies
@@ -12,12 +14,12 @@ You have to mention to the Twitter bot account ([@nazbot_](https://twitter.com/n
 - **pip packages** (All in 'requirements.txt' file. To install, you need first python3-pip apt package manager. Then, install them with command 'pip install -r requirements.txt')
 - **environment variables** (To connect to Twitter API and other things, you need to get the access tokens from a Twitter developer account. Then, load with an .env file and dotenv pip package)
 ~~~
-  - CONSUMER_KEY
-  - CONSUMER_SECRET
-  - ACCESS_KEY
-  - ACCESS_SECRET
-  - ACCOUNT_ID
-  - ACCOUNT_NAME
+CONSUMER_KEY
+CONSUMER_SECRET
+ACCESS_KEY
+ACCESS_SECRET
+ACCOUNT_ID
+ACCOUNT_NAME
 ~~~
 ### Execution
 When you have all the dependencies, you just have to 'python3 main.py'. 
