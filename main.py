@@ -14,21 +14,42 @@ class Listener(StreamListener):
         bot_name = os.getenv('ACCOUNT_NAME')
         tweet = json.loads(tweet)
 
+        if hasattr(tweet,'display_text_range'):
+            if '@'+ bot_name not in tweet['text'][tweet['display_text_range'][0]:].lower():
+                return
         if hasattr(tweet,'retweeted_status'):
             return
         if tweet['in_reply_to_status_id'] is None:
             return
 
-        try:
-            replied_tweet = get_replied_tweet(tweet['in_reply_to_status_id']).__dict__['_json']
 
-            print('Procesando tuit de: '+ replied_tweet['user']['screen_name'])
-            reply_tweet(replied_tweet)
-            print('Procesado.')
+        try:
+            replied_tweet = get_tweet(tweet['in_reply_to_status_id']).__dict__['_json']
         except Exception as e:
             return
 
-
+        if not hasattr(replied_tweet,'quoted_status_id') or replied_tweet['quoted_status_id'] is None:
+            if not hasattr(replied_tweet,'in_reply_to_status_id') or replied_tweet['in_reply_to_status_id'] is None:
+                return
+            try:
+                mentioned_tweet = get_tweet(replied_tweet['in_reply_to_status_id']).__dict__['_json']
+                reply_tweet(replied_tweet['id'])
+            except:
+                try:
+                    reply_tweet(tweet['id'])
+                except Exception as e:
+                    return
+                return
+        else:
+            try:
+                mentioned_tweet = get_tweet(replied_tweet['in_reply_to_status_id']).__dict__['_json']
+                reply_tweet(mentioned_tweet['id'])
+            except:
+                try:
+                    reply_tweet(mentioned_tweet['id'])
+                except Exception as e:
+                    return
+                return
 
 
 def set_up_auth():
@@ -47,6 +68,7 @@ def follow_stream():
 
 def reply_tweet(tweet):
     api, auth = set_up_auth()
+    print('Procesando tuit de: '+ tweet['user']['screen_name'])
 
     tweet_url = 'https://twitter.com/{}/status/{}'.format(
         tweet['user']['screen_name'], tweet['id'])
@@ -58,9 +80,9 @@ def reply_tweet(tweet):
                             in_reply_to_status_id=tweet['id_str'],
                             auto_populate_reply_metadata=True
                             )
+    print('Procesado.')
 
-
-def get_replied_tweet(tweet_id):
+def get_tweet(tweet_id):
     api, auth = set_up_auth()
     try:
         replied_tweet = api.get_status(tweet_id)
