@@ -1,10 +1,10 @@
 # nazbot
-Twitter bot that interacts with user mentions, sending tweet capture to them with its username changed by a randomly generated one.
+## What is this?
+It's a Twitter bot that interacts with user mentions, sending tweet capture to them with its username changed by a randomly generated one.
 
 ## How it works?
 You have to mention to the Twitter bot account (@nazbot_). Then, it will reply you with a capture of the tweet that you replied with his nickname changed.
 
----
 ## Deployment
 ### Dependencies
 - **Firefox Browser** (Selenium WebDriver needs binaries)
