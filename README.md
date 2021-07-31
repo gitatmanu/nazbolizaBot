@@ -4,8 +4,8 @@ It's a Twitter bot that interacts with user mentions, sending tweet capture to t
 
 ## How it works?
 You have to mention to the Twitter bot account ([@nazbot_](https://twitter.com/nazbot_)). Then, it will reply you with a capture of the tweet that you replied with his nickname changed.
-![a](/docs/howitworks_1.jpg)
-![b](/docs/howitworks_2.jpg)
+![a](https://raw.githubusercontent.com/gitatmanu/nazbot/main/docs/howitworks_1.png)
+![b](https://raw.githubusercontent.com/gitatmanu/nazbot/main/docs/howitworks_2.png)
 
 ## Deployment
 ### Dependencies
