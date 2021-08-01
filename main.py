@@ -14,43 +14,22 @@ class Listener(StreamListener):
         bot_name = os.getenv('ACCOUNT_NAME')
         tweet = json.loads(tweet)
 
-        if hasattr(tweet,'display_text_range'):
-            if '@'+ bot_name not in tweet['text'][tweet['display_text_range'][0]:].lower():
-                return
+        if bot_name in tweet['user']['screen_name']:
+            return
         if hasattr(tweet,'retweeted_status'):
             return
         if tweet['in_reply_to_status_id'] is None:
             return
-
 
         try:
             replied_tweet = get_tweet(tweet['in_reply_to_status_id']).__dict__['_json']
         except Exception as e:
             return
 
-        if not hasattr(replied_tweet,'quoted_status_id') or replied_tweet['quoted_status_id'] is None:
-            if not hasattr(replied_tweet,'in_reply_to_status_id') or replied_tweet['in_reply_to_status_id'] is None:
-                return
-            try:
-                mentioned_tweet = get_tweet(replied_tweet['in_reply_to_status_id']).__dict__['_json']
-                reply_tweet(replied_tweet['id'])
-            except:
-                try:
-                    reply_tweet(tweet['id'])
-                except Exception as e:
-                    return
-                return
-        else:
-            try:
-                mentioned_tweet = get_tweet(replied_tweet['in_reply_to_status_id']).__dict__['_json']
-                reply_tweet(mentioned_tweet['id'])
-            except:
-                try:
-                    reply_tweet(mentioned_tweet['id'])
-                except Exception as e:
-                    return
-                return
-
+        if bot_name in replied_tweet['user']['screen_name']:
+            return
+        
+        reply_tweet(replied_tweet)
 
 def set_up_auth():
     auth = tweepy.OAuthHandler(os.getenv('CONSUMER_KEY'), os.getenv('CONSUMER_SECRET'))
@@ -97,7 +76,7 @@ def generate_image(tweet_url, name):
 
     # Modify HTML
     driver.get(tweet_url)
-    sleep(3)
+    sleep(6)
     try:
         nazbol_name = generate_nazbol_name()
         name_fields = driver.find_elements_by_xpath("//a[@href='/" + name + "']//div/div[1]/div[1]//span//span")
@@ -127,7 +106,7 @@ def generate_image(tweet_url, name):
 
 def init_driver():
     user_agent = 'Mozilla/5.0 (Linux; Android 7.0; SM-G892A Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/67.0.3396.87 Mobile Safari/537.36'
-    executable_path = os.path.join(os.path.dirname(__file__), 'drivers/geckodriver')
+    executable_path = os.path.join(os.path.dirname(__file__), 'drivers/geckodriver.exe')
     
     # Firefox webdriver
     options = webdriver.FirefoxOptions()
