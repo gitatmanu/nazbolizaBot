@@ -23,5 +23,5 @@ ACCOUNT_ID
 ACCOUNT_NAME
 ~~~
 ### Execution
-When you have all the dependencies, you just have to 'python3 main.py'. 
+When you have all the dependencies, you just have to execute 'python3 main.py'. 
 You can use a terminal multiplexer like 'screen' or 'tmux', or a python daemonizer like pip package 'python-daemon'.
