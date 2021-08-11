@@ -42,7 +42,7 @@ def follow_stream():
     api, auth = set_up_auth()
     listener = Listener(StreamListener)
     stream = Stream(auth, listener)
-    stream.filter(track=[os.getenv('ACCOUNT_NAME')])
+    stream.filter(track=[os.getenv('ACCOUNT_NAME')], is_async=True, stall_warnings=True)
 
 
 def reply_tweet(tweet):
