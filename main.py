@@ -30,6 +30,10 @@ class Listener(StreamListener):
             return
         
         reply_tweet(replied_tweet)
+    
+    def on_error(self, status_code):
+        print("Error en el stream: " + str(status_code))
+        return False
 
 def set_up_auth():
     auth = tweepy.OAuthHandler(os.getenv('CONSUMER_KEY'), os.getenv('CONSUMER_SECRET'))
@@ -125,4 +129,9 @@ def init_driver():
 
 
 if __name__ == '__main__':
-    follow_stream()
+    while True:
+        follow_stream()
+        print("Se ha producido un error, reiniciando en 10 segundos")
+        time.sleep(10)
+        print("Reiniciando nazbot")
+
