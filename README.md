@@ -1,4 +1,5 @@
-# nazbot
+# nazbot (Bot does not work, Twitter account has been suspended.)
+
 ## What is this?
 It's a Twitter bot that interacts with user mentions, sending tweet capture to them with its username changed by a randomly generated one.
 
